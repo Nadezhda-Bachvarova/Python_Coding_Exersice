@@ -1,5 +1,5 @@
-# ЗА МОДУЛА
-## Professional Module - Python Web Developer at Software University
+# PYTHON ADVANCED 
+## PART OF Professional Module - Python Web Developer at Software University
 
 В модула "Python Advanced" студентите изучават езика Python в дълбочина, като се запознават с по-сериозни и сложни концепции в програмирането. Фокусът е насочен към надграждане на алгоритмично мислене на студентите и разрешаването на по-сложни архитектурни проблеми.
 
