@@ -11,7 +11,6 @@ class ArticleCreateForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': '5'}),
             'image': forms.FileInput(attrs={'class': 'img_input'}),
         }
-        # exclude = ('user',)
         fields = '__all__'
 
 

@@ -1157,6 +1157,7 @@ sequence|table|18793|18795|1
     </table>
     <table id="69" parent="25" name="advanture_app_article">
       <ObjectId>18768</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>1517</StateNumber>
     </table>
