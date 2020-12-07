@@ -11,10 +11,9 @@
                     {% for field in form %}
                         {% bootstrap_field field %}
                     {% endfor %}
-                    <img id="img_preview" src="{{ article.image.url }}" class="w-50 rounded mx-auto d-block"/>
                     <button class="btn btn-primary mt-2" type="submit">Edit</button>
                 </form>
             </div>
-            <div class="col-lg-3"></div>
         </div>
+
 {% endblock %}
