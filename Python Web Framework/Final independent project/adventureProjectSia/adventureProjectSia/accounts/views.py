@@ -73,8 +73,13 @@ def signin_user(request):
 def user_profile(request, pk=None):
     user = request.user if pk is None else User.objects.get(pk=pk)
     if request.method == 'GET':
-        context = dict(profile_user=user, profile=user.userprofile, articles=user.userprofile.article_set.all(),
-                       profile_picture=user.userprofile.profile_image, form=ProfileForm())
+        context = {
+            'profile_user': user,
+            'profile': user.userprofile,
+            'articles': user.userprofile.article_set.all(),
+            'profile_pictures': user.userprofile.profile_image,
+            'form': ProfileForm(),
+        }
         return render(request, 'registration/user_profile.html', context)
     else:
         form = ProfileForm(request.POST, request.FILES, instance=user.userprofile)

@@ -1,50 +1,60 @@
+from django.urls import reverse_lazy
+from django.views import generic as views
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
-from adventureProjectSia.advanture_app.forms import FilterForm, CommentForm, ArticleCreateForm
+# from django.views.generic import ListView
+from adventureProjectSia.advanture_app.forms import CommentForm, ArticleCreateForm
 from adventureProjectSia.advanture_app.models import Article, Comment, Like
 from adventureProjectSia.adventure_core.clean_up import clean_up_files
 
 
-def extract_filter_values(params):
-    order = params['order'] if 'order' in params else FilterForm.ORDER_ASC
-    text = params['text'] if 'text' in params else ''
-
-    return {
-        'order': order,
-        'text': text,
-    }
-
-
-class HomeView(ListView):
+class HomeView(views.TemplateView):
     template_name = 'home.html'
-    model = Article
-    context_object_name = 'articles'
-    order_by_asc = True
-    order_by = 'title'
-    contains_text = ''
 
-    def dispatch(self, request, *args, **kwargs):
-        params = extract_filter_values(request.GET)
-        self.order_by_asc = params['order'] == FilterForm.ORDER_ASC
-        self.order_by = params['order']
-        self.contains_text = params['text']
-        return super().dispatch(request, *args, **kwargs)
 
-    def get_queryset(self):
-        order_by = 'title' if self.order_by == FilterForm.ORDER_ASC else '-title'
-        result = self.model.objects.filter(title__icontains=self.contains_text).order_by(order_by)
+def unauthorised_message(request):
+    return render(request, 'unauthorised.html')
 
-        return result
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['filter_form'] = FilterForm(initial={
-            'order': self.order_by,
-            'text': self.contains_text
-        })
+# def extract_filter_values(params):
+#     order = params['order'] if 'order' in params else FilterForm.ORDER_ASC
+#     text = params['text'] if 'text' in params else ''
+#
+#     return {
+#         'order': order,
+#         'text': text,
+#     }
 
-        return context
+
+# class HomeView(ListView):
+#     template_name = 'home.html'
+#     model = Article
+#     context_object_name = 'articles'
+#     order_by_asc = True
+#     order_by = 'title'
+#     contains_text = ''
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         params = extract_filter_values(request.GET)
+#         self.order_by_asc = params['order'] == FilterForm.ORDER_ASC
+#         self.order_by = params['order']
+#         self.contains_text = params['text']
+#         return super().dispatch(request, *args, **kwargs)
+#
+#     def get_queryset(self):
+#         order_by = 'title' if self.order_by == FilterForm.ORDER_ASC else '-title'
+#         result = self.model.objects.filter(title__icontains=self.contains_text).order_by(order_by)
+#
+#         return result
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['filter_form'] = FilterForm(initial={
+#             'order': self.order_by,
+#             'text': self.contains_text
+#         })
+#
+#         return context
 
 
 # def article_details(request, pk, slug=None):
@@ -79,48 +89,26 @@ def article_details_or_comment(request, pk):
         return render(request, 'article_details.html', context)
 
 
-# class ArticleCreateView(LoginRequiredMixin, FormView):  # GroupRequiredMixin
-#     form_class = ArticleCreateForm
-#     template_name = 'article_create.html'
-#     success_url = reverse_lazy('home')
-#     groups = ['User']
-#
-#     def form_valid(self, form):
-#         form.save()
-#         return super().form_valid(form)
+class ArticleCreatView(views.CreateView):
+    template_name = 'article_create.html'
+    model = Article
+    form_class = ArticleCreateForm
 
-@login_required
-def article_create(request):
-    if request.method == 'GET':
-        context = {
-            'form': ArticleCreateForm(),
-        }
-        return render(request, 'article_create.html', context)
-    else:
-        form = ArticleCreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.cleaned_data['user']
-            context = {
-                'user': user,
-            }
-            form.save()
-            return render(request, 'home.html', context)
-        context = {
-            'form': form,
-        }
-        return render(request, 'article_create.html', context)
+    def get_success_url(self):
+        url = reverse_lazy('article details or comment', kwargs={'pk': self.object.id})
+        return url
+
+    def form_valid(self, form):
+        article = form.save(commit=False)
+        article.user = self.request.user.userprofile
+        article.save()
+        return super().form_valid(form)
 
 
-def unauthorised_message(request):
-    return render(request, 'unauthorised.html')
-
-
-def article_list(request):
-    context = {
-        'articles': Article.objects.all(),
-    }
-
-    return render(request, 'article_list.html', context)
+class ArticlesListView(views.ListView):
+    model = Article
+    template_name = 'article_list.html'
+    context_object_name = 'articles'
 
 
 def edit_article(request, pk):

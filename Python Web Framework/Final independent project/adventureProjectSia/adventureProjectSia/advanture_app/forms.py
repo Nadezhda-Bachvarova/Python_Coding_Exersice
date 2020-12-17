@@ -10,9 +10,8 @@ class ArticleCreateForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': '5'}),
             'image': forms.FileInput(attrs={'class': 'img_input'}),
-            # 'user': forms.HiddenInput(),
         }
-        fields = '__all__'
+        exclude = ('user',)
 
 
 class FilterForm(forms.Form):
@@ -35,5 +34,4 @@ class FilterForm(forms.Form):
 
 class CommentForm(forms.Form):
     text = forms.CharField(required=True, widget=forms.Textarea(
-        attrs={'class': 'form-control rounded-2', }
-    ))
+        attrs={'class': 'form-control rounded-2', }))
