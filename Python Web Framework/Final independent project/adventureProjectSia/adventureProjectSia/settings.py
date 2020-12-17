@@ -37,10 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    'advanture_app',
+    'adventureProjectSia.accounts',
+    'adventureProjectSia.advanture_app',
     'bootstrap4',
-    'adventure_core',
+    'adventureProjectSia.adventure_core',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'adventureProjectSia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'adventure',
+        'NAME': 'adventure_database',
         'USER': 'postgres',
         'PASSWORD': '123456789'
     }

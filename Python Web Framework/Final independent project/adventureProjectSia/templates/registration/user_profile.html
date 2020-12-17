@@ -31,7 +31,8 @@
                         <div class="card" style="width: 18rem;">
                             <img src="{{ article.image.url }}" class="card-img-top" alt="Image of {{ article.title }}">
                             <div class="card-body">
-                                <h5 class="card-title">{{ article.destination }}</h5>
+                                <h5 class="card-title">{{ article.destination }}, Likes: {{ article.like_set.count }}</h5>
+                                <p class="card-text">{{ article.content }}</p>
                                 <p class="text"> {{ article.hashtag }} </p>
                                 <p class="card-text"><strong>Author: {{ article.user.user.username }}</strong></p>
                                 <a href="{% url 'article details or comment' article.id %}" class="btn btn-primary">See
