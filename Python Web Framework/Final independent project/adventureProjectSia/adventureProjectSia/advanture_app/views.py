@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect
 from adventureProjectSia.advanture_app.forms import CommentForm, ArticleCreateForm
-from adventureProjectSia.advanture_app.models import Article, Comment, Like
+from adventureProjectSia.advanture_app.models import Article, Comment, Like, NewsAndEvents
 from adventureProjectSia.adventure_core.clean_up import clean_up_files
 
 
@@ -55,7 +55,6 @@ class ArticlesListView(views.ListView):
     context_object_name = 'articles'
 
 
-# def article_details(request, pk, slug=None):
 @login_required
 def article_details_or_comment(request, pk):
     article = Article.objects.get(pk=pk)
@@ -116,8 +115,26 @@ def like_article(request, pk):
     return redirect('article details or comment', pk)
 
 
-def article_with_max_likes(request, pk):
-    pass
+def article_with_max_likes(request):
+    articles = Article.objects.all()
+    top_article = 0
+    for article in articles:
+        if article.like_set.count() > top_article:
+            top_article = article
+    context = {
+        'top_article': top_article,
+    }
+    return render(request, 'home.html', context)
+
+
+def news_and_events(request):
+    events = NewsAndEvents.objects.all()
+    if request.method == 'GET':
+        context = {
+            'events': events,
+        }
+        return render(request, 'news_and_events.html', context)
+
 
 # def extract_filter_values(params):
 #     order = params['order'] if 'order' in params else FilterForm.ORDER_ASC

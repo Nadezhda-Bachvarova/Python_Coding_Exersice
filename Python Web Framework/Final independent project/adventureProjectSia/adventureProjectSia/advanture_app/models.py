@@ -37,3 +37,15 @@ class Comment(models.Model):
 
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
+
+class NewsAndEvents(models.Model):
+    title = models.CharField(max_length=50)
+    place = models.CharField(max_length=50)
+    time = models.TimeField()
+    description = models.TextField(blank=False)
+    image = models.ImageField(
+        blank=False,
+        upload_to='events',
+    )
+
+

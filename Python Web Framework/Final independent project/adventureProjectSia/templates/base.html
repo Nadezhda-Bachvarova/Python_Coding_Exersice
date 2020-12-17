@@ -39,6 +39,9 @@
                 <li>
                     <a class="nav-link" href="{% url 'user profile' user.id %}">Hello, {{ user.username }}!</a>
                 </li>
+                 <li>
+                    <a class="nav-link" href="{% url 'news and events' %}">News and Events</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'signout user' %}">Sign out</a>
                 </li>

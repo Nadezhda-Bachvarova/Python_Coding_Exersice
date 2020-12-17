@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     {% load bootstrap4 %}
+
+
     <div class="d-flex">
         <div class="d-inline p-2 w-50">
             <img class="card-img-top" src="{{ article.image.url }}" alt="Article image">
@@ -11,10 +13,10 @@
                 <h3 class="align-content-center">{{ author }}</h3>
                 <p class="card-text">{{ article.content }}</p>
                 {% if can_edit %}
-                    <a href="{% url 'edit article' article.pk %}" class="btn btn-success">Edit</a>
+                    <a href="{% url 'edit article' article.id %}" class="btn btn-success">Edit</a>
                 {% endif %}
                 {% if can_delete %}
-                    <a href="{% url 'delete article' article.pk %}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'delete article' article.id %}" class="btn btn-danger">Delete</a>
                 {% endif %}
                 {% if can_like %}
                     {% if has_liked %}
@@ -32,7 +34,7 @@
         {% if article.comment_set.exists %}
             {% for comment in article.comment_set.all %}
                 <div class="box">
-                    <a href="{% url 'user profile' comment.user_id %}">{{ article.user.user.username }}</a>
+                    <a>{{ comment.user.user.username }}</a>
                     <h5><em>{{ comment.text }}</em></h5>
                     <hr>
                 </div>
@@ -44,7 +46,7 @@
         {% endif %}
         {% if can_comment %}
             <div class="box">
-                <form method="post" action="{% url 'article details or comment' article.pk %}">
+                <form method="post" action="{% url 'article details or comment' article.id %}">
                     {{ form }}
                     {% csrf_token %}
                     <button class="btn btn-primary mt-2" type="submit">Add comment</button>

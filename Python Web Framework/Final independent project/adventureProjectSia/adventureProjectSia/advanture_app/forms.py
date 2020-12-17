@@ -14,6 +14,11 @@ class ArticleCreateForm(forms.ModelForm):
         exclude = ('user',)
 
 
+class CommentForm(forms.Form):
+    text = forms.CharField(required=True, widget=forms.Textarea(
+        attrs={'class': 'form-control rounded-2', }))
+
+
 class FilterForm(forms.Form):
     ORDER_ASC = 'asc'
     ORDER_DESC = 'desc'
@@ -30,8 +35,3 @@ class FilterForm(forms.Form):
         choices=ORDER_CHOICES,
         required=False,
     )
-
-
-class CommentForm(forms.Form):
-    text = forms.CharField(required=True, widget=forms.Textarea(
-        attrs={'class': 'form-control rounded-2', }))
