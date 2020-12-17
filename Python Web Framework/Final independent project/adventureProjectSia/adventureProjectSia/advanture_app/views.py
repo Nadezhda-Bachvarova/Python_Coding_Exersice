@@ -1,8 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic as views
 from django.contrib.auth.decorators import login_required
+
 from django.shortcuts import render, redirect
-# from django.views.generic import ListView
 from adventureProjectSia.advanture_app.forms import CommentForm, ArticleCreateForm
 from adventureProjectSia.advanture_app.models import Article, Comment, Like
 from adventureProjectSia.adventure_core.clean_up import clean_up_files
@@ -89,7 +90,7 @@ def article_details_or_comment(request, pk):
         return render(request, 'article_details.html', context)
 
 
-class ArticleCreatView(views.CreateView):
+class ArticleCreatView(LoginRequiredMixin, views.CreateView):
     template_name = 'article_create.html'
     model = Article
     form_class = ArticleCreateForm
@@ -111,37 +112,20 @@ class ArticlesListView(views.ListView):
     context_object_name = 'articles'
 
 
-def edit_article(request, pk):
-    article = Article.objects.get(pk=pk)
-    if request.method == 'GET':
-        form = ArticleCreateForm(instance=article)
+class UpdateArticleView(LoginRequiredMixin, views.UpdateView):
+    template_name = 'article_edit.html'
+    model = Article
+    form_class = ArticleCreateForm
 
-        context = {
-            'form': form,
-            'article': article,
-        }
+    def get_success_url(self):
+        url = reverse_lazy('article details or comment', kwargs={'pk': self.object.id})
+        return url
 
-        return render(request, f'article_edit.html', context)
-    else:
-        old_image = article.image
-        form = ArticleCreateForm(
-            request.POST,
-            request.FILES,
-            instance=article
-        )
-        if form.is_valid():
-            if old_image:
-                clean_up_files(old_image.path)
-            form.save()
-            Like.objects.filter(article_id=article.id) \
-                .delete()
-            return redirect('article details or comment', article.pk)
-
-        context = {
-            'form': form,
-            'article': article,
-        }
-    return render(request, 'article_edit.html', context)
+    def form_valid(self, form):
+        old_image = self.get_object().image
+        if old_image:
+            clean_up_files(old_image.path)
+            return super().form_valid(form)
 
 
 @login_required
