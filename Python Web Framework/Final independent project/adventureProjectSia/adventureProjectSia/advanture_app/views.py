@@ -115,18 +115,6 @@ def like_article(request, pk):
     return redirect('article details or comment', pk)
 
 
-def article_with_max_likes(request):
-    articles = Article.objects.all()
-    top_article = 0
-    for article in articles:
-        if article.like_set.count() > top_article:
-            top_article = article
-    context = {
-        'top_article': top_article,
-    }
-    return render(request, 'home.html', context)
-
-
 def news_and_events(request):
     events = NewsAndEvents.objects.all()
     if request.method == 'GET':
@@ -134,44 +122,3 @@ def news_and_events(request):
             'events': events,
         }
         return render(request, 'news_and_events.html', context)
-
-
-# def extract_filter_values(params):
-#     order = params['order'] if 'order' in params else FilterForm.ORDER_ASC
-#     text = params['text'] if 'text' in params else ''
-#
-#     return {
-#         'order': order,
-#         'text': text,
-#     }
-
-
-# class HomeView(ListView):
-#     template_name = 'home.html'
-#     model = Article
-#     context_object_name = 'articles'
-#     order_by_asc = True
-#     order_by = 'title'
-#     contains_text = ''
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         params = extract_filter_values(request.GET)
-#         self.order_by_asc = params['order'] == FilterForm.ORDER_ASC
-#         self.order_by = params['order']
-#         self.contains_text = params['text']
-#         return super().dispatch(request, *args, **kwargs)
-#
-#     def get_queryset(self):
-#         order_by = 'title' if self.order_by == FilterForm.ORDER_ASC else '-title'
-#         result = self.model.objects.filter(title__icontains=self.contains_text).order_by(order_by)
-#
-#         return result
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['filter_form'] = FilterForm(initial={
-#             'order': self.order_by,
-#             'text': self.contains_text
-#         })
-#
-#         return context

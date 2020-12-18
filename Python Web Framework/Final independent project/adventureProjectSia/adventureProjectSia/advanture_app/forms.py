@@ -18,20 +18,3 @@ class CommentForm(forms.Form):
     text = forms.CharField(required=True, widget=forms.Textarea(
         attrs={'class': 'form-control rounded-2', }))
 
-
-class FilterForm(forms.Form):
-    ORDER_ASC = 'asc'
-    ORDER_DESC = 'desc'
-
-    ORDER_CHOICES = (
-        (ORDER_ASC, 'Ascending'),
-        (ORDER_DESC, 'Descending'),
-    )
-
-    text = forms.CharField(
-        required=False,
-    )
-    order = forms.ChoiceField(
-        choices=ORDER_CHOICES,
-        required=False,
-    )

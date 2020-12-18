@@ -26,26 +26,6 @@ class SignUpView(views.CreateView):
         context['profile_form'] = ProfileForm()
         return context
 
-    # @transaction.atomic
-    # def post(self, request):
-    #     user_form = RegisterForm(request.POST)
-    #     profile_form = ProfileForm(request.POST, request.FILES)
-    #
-    #     if user_form.is_valid() and profile_form.is_valid():
-    #         user = user_form.save()
-    #         profile = profile_form.save(commit=False)
-    #         profile.user = user
-    #         profile.save()
-    #
-    #         login(request, user)
-    #         return redirect('home')
-    #
-    #     context = {
-    #         'user_form': RegisterForm(),
-    #         'profile_form': ProfileForm(),
-    #     }
-    #     return render(request, 'registration/signup.html', context)
-
 
 def get_redirect_url(params):
     redirect_url = params.get('return_url')

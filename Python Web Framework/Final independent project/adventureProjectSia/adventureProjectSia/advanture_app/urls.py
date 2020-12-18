@@ -2,11 +2,10 @@ from django.urls import path
 
 from adventureProjectSia.advanture_app import views
 from adventureProjectSia.advanture_app.views import article_details_or_comment, unauthorised_message, \
-    delete_article, like_article, article_with_max_likes, news_and_events
+    delete_article, like_article, news_and_events
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
-    path('', article_with_max_likes, name='home'),
     path('news&events/', news_and_events, name='news and events'),
     path('details/<int:pk>/', article_details_or_comment, name='article details or comment'),
     path('creat/', views.ArticleCreatView.as_view(), name='article creat'),
