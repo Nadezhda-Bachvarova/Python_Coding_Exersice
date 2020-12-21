@@ -3,22 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views import generic as views
+from django.views.generic import TemplateView
 
 from adventureProjectSia.accounts.forms import LoginForm, RegisterForm, ProfileForm
 
 
-class SignUpView(views.CreateView):
+class SignUpView(TemplateView):
     template_name = 'registration/signup.html'
-    form_class = RegisterForm
-    success_url = reverse_lazy('current user profile')
-
-    def form_valid(self, form):
-        valid = super().form_valid(form)
-        user = form.save()
-        login(self.request, user)
-        return valid
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -26,6 +17,26 @@ class SignUpView(views.CreateView):
         context['profile_form'] = ProfileForm()
         return context
 
+    @transaction.atomic
+    def post(self, request):
+        user_form = RegisterForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
+
+            login(request, user)
+            return redirect('home')
+
+        context = {
+            'user_form': RegisterForm(),
+            'profile_form': ProfileForm(),
+        }
+
+        return render(request, 'registration/signup.html', context)
 
 def get_redirect_url(params):
     redirect_url = params.get('return_url')

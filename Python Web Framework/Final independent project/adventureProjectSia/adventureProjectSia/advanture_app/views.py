@@ -115,6 +115,7 @@ def like_article(request, pk):
     return redirect('article details or comment', pk)
 
 
+@login_required
 def news_and_events(request):
     events = NewsAndEvents.objects.all()
     if request.method == 'GET':
