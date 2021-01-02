@@ -859,7 +859,7 @@ sequence|table|19578|19580|1
       <ObjectId>13442</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>1901</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2136</IntrospectionStateNumber>
       <Current>1</Current>
     </database>
     <database id="12" parent="1" name="products">
@@ -1017,7 +1017,7 @@ sequence|table|19578|19580|1
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>1902</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2137</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="44" parent="11" name="heap">

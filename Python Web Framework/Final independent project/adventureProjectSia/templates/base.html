@@ -23,29 +23,29 @@
             <li>
                 <a class="nav-link" href="/">Home</a>
             </li>
-            <li>
-                <a class="nav-link" href="{% url 'articles' %}">All Articles</a>
-            </li>
-            {% if user.is_authenticated %}
-                <li>
-                    <a class="nav-link" href="{% url 'article creat' %}">Create New Article</a>
-                </li>
-            {% else %}
-                <li>
-                    <a class="nav-link" href="{% url 'message' %}">Create New Article</a>
-                </li>
-            {% endif %}
             {% if user.is_authenticated %}
                 <li>
                     <a class="nav-link" href="{% url 'user profile' user.id %}">Hello, {{ user.username }}!</a>
                 </li>
-                 <li>
+                <li>
                     <a class="nav-link" href="{% url 'news and events' %}">News and Events</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'article creat' %}">Create New Article</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'articles' %}">All Articles</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'signout user' %}">Sign out</a>
                 </li>
             {% else %}
+                <li>
+                    <a class="nav-link" href="{% url 'articles' %}">All Articles</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'message' %}">Create New Article</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'signin user' %}">Sign in</a>
                 </li>
@@ -53,6 +53,7 @@
                     <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
                 </li>
             {% endif %}
+
         </ul>
     </div>
 </nav>

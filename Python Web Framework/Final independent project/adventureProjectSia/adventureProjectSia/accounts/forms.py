@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -10,6 +11,16 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(),
     )
+
+    # def clean_password(self):
+    #     password = self.cleaned_data.get('password')
+    #     try:
+    #         password_validation.validate_password(password, self.instance)
+    #     except forms.ValidationError as error:
+    #         # 'Invalid password!'
+    #         # Method inherited from BaseForm
+    #         self.add_error('password', error)
+    #     return password
 
 
 class RegisterForm(UserCreationForm):

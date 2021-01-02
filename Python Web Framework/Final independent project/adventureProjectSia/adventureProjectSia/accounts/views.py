@@ -38,6 +38,7 @@ class SignUpView(TemplateView):
 
         return render(request, 'registration/signup.html', context)
 
+
 def get_redirect_url(params):
     redirect_url = params.get('return_url')
     return redirect_url if redirect_url else 'home'
